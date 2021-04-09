@@ -9,7 +9,7 @@ X-Plasma-MainScript=code/main.js
 X-KDE-PluginInfo-Author=Ronoaldo JLP
 X-KDE-PluginInfo-Email=ronoaldo@gmail.com
 X-KDE-PluginInfo-Name=forceprimaryscreen
-X-KDE-PluginInfo-Version=1.5
+X-KDE-PluginInfo-Version=1.6
 
 X-KDE-PluginInfo-License=GPL
 X-KDE-ServiceTypes=KWin/Script

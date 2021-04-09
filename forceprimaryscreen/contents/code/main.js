@@ -3,21 +3,22 @@
  *
  */
 
-function shouldMove(client) {
-	return !client.specialWindow && !client.modal;
+function shouldMove(window) {
+	// Should not move if the window is special, modal or transient for other window
+	var specialWindow = window.specialWindow || window.modal || window["transient"];
+	if (specialWindow) {
+		return false;
+	}
+	// If a non-special window is added, but is already in the right screen, avoid moving
+	if (window.screen === 0) {
+		return false;
+	}
+	// Move all the other cases to the right screen
+	return true;
 }
 
-workspace.clientAdded.connect(function(client) {
-	// If we have more screens, force new window to be on primary
-	if (workspace.numScreens > 1 && shouldMove(client)) {
-		var primaryScreenGeometry = workspace.clientArea(KWin.ScreenArea, 0, 0);
-		print("Multiple screens setup; moving",
-			client.caption, " (", client.windowId, ") ",
-			"to primary screen at",	primaryScreenGeometry.x, primaryScreenGeometry.y);
-		// Move client to primary screen geometry (x,y) but keep original window size
-		var g = client.geometry;
-		g.x = primaryScreenGeometry.x;
-		g.y = primaryScreenGeometry.y;
-		client.geometry = g;
+workspace.clientAdded.connect(function(w) {
+	if (workspace.numScreens > 1 && shouldMove(w)) {
+		workspace.sendClientToScreen(w, 0);
 	}
 });
